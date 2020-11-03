@@ -30,7 +30,14 @@ namespace plantuml_service.Controllers
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
-            var renderer = factory.CreateRenderer(new PlantUmlSettings());
+
+            var settings = new PlantUmlSettings
+            {
+                RenderingMode = RenderingMode.Remote,
+                RemoteUrl = "http://host.docker.internal:8080/"
+            };
+
+            var renderer = factory.CreateRenderer(settings);
             var bytes = await renderer.RenderAsync(code, OutputFormat.Png); //"Bob -> Alice : Hello"
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new ByteArrayContent(bytes);
