@@ -5,6 +5,7 @@
     <RootNamespace>plantuml_service</RootNamespace>
     <UserSecretsId>faa2261c-22f9-450d-97bf-cef12c9ea862</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

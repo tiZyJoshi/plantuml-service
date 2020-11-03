@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+    plantuml-server:
+        image: plantuml/plantuml-server
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - "plantuml"
+
+
+    plantuml-service:
+        depends_on:
+            - plantuml-server
+        image: ${DOCKER_REGISTRY-}plantumlservice
+        restart: always
+        build:
+            context: .
+            dockerfile: plantuml-service/Dockerfile
+        networks:
+            - "plantuml"
+
+networks:
+    plantuml:
