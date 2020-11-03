@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlantUml.Net;
 using System.Net;
@@ -25,8 +26,11 @@ namespace plantuml_service.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> Get([FromForm] string code)
         {
+            var guid = Guid.NewGuid();
+            _logger.LogInformation($"Get Request {guid}");
             if (code is null)
             {
+                _logger.LogInformation($"Failed: Empty Get Request {guid}");
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
             var settings = new PlantUmlSettings
@@ -40,7 +44,7 @@ namespace plantuml_service.Controllers
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new ByteArrayContent(bytes);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-            _logger.LogInformation("");
+            _logger.LogInformation($"Diagram successfully generated {guid}");
             return result;
         }
     }
