@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PlantUml.Net;
 
 namespace plantuml_service
 {
@@ -18,6 +19,16 @@ namespace plantuml_service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(provider =>
+            {
+                var settings = new PlantUmlSettings
+                {
+                    RenderingMode = RenderingMode.Remote,
+                    RemoteUrl = "http://plantuml-server:8080/"
+                };
+                var factory = new RendererFactory();
+                return factory.CreateRenderer(settings);
+            });
             services.AddControllers();
         }
 

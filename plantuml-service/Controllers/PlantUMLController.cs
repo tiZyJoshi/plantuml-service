@@ -16,10 +16,12 @@ namespace plantuml_service.Controllers
     public class PlantUMLController : ControllerBase
     {
         private readonly ILogger<PlantUMLController> _logger;
+        private readonly IPlantUmlRenderer _renderer;
 
-        public PlantUMLController(ILogger<PlantUMLController> logger)
+        public PlantUMLController(ILogger<PlantUMLController> logger, IPlantUmlRenderer renderer)
         {
             _logger = logger;
+            _renderer = renderer;
         }
 
         // GET api/<PlantUMLController>/5
@@ -33,14 +35,7 @@ namespace plantuml_service.Controllers
                 _logger.LogInformation($"Failed: Empty Get Request {guid}");
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
-            var settings = new PlantUmlSettings
-            {
-                RenderingMode = RenderingMode.Remote,
-                RemoteUrl = "http://plantuml-server:8080/"
-            };
-            var factory = new RendererFactory();
-            var renderer = factory.CreateRenderer(settings);
-            var bytes = await renderer.RenderAsync(code, OutputFormat.Png); //"Bob -> Alice : Hello"
+            var bytes = await _renderer.RenderAsync(code, OutputFormat.Png); //"Bob -> Alice : Hello"
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new ByteArrayContent(bytes);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
