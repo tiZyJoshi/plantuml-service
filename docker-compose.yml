@@ -9,12 +9,14 @@ services:
 
 
     plantuml-service:
-        image: tizyjoshi/plantumlservice:latest
         depends_on:
             - plantuml-server
         restart: always
         ports:
             - "8080:80"
+        build:
+            context: .
+            dockerfile: plantuml-service/Dockerfile
         networks:
             - "plantuml"
 
