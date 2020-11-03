@@ -25,23 +25,22 @@ namespace plantuml_service.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> Get([FromForm] string code)
         {
-            var factory = new RendererFactory();
             if (code is null)
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
-
             var settings = new PlantUmlSettings
             {
                 RenderingMode = RenderingMode.Remote,
-                RemoteUrl = "http://host.docker.internal:8080/"
+                RemoteUrl = "http://plantuml-server:8080/"
             };
-
+            var factory = new RendererFactory();
             var renderer = factory.CreateRenderer(settings);
             var bytes = await renderer.RenderAsync(code, OutputFormat.Png); //"Bob -> Alice : Hello"
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new ByteArrayContent(bytes);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            _logger.LogInformation("");
             return result;
         }
     }

@@ -4,8 +4,6 @@ services:
     plantuml-server:
         image: plantuml/plantuml-server
         restart: always
-        ports:
-            - "8080:8080"
         networks:
             - "plantuml"
 
@@ -15,6 +13,8 @@ services:
             - plantuml-server
         image: ${DOCKER_REGISTRY-}plantumlservice
         restart: always
+        ports:
+            - "8080:80"
         build:
             context: .
             dockerfile: plantuml-service/Dockerfile
