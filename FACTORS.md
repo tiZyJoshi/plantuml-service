@@ -6,6 +6,7 @@ There is a branch 'deploy' to publish changes to docker hub. (The master branch 
 ### 2 Dependencies - Explicitly declare and isolate dependencies
 When started from 'master' branch all required resources are downloaded from docker hub.
 On 'Deploy' branch the build is done in a docker container and can be published to docker hub.
+All dependencies in the ASP.NET project are handled by nuget.
 The plantuml-service image comes as a precompiled container.
 ### 3 Config - Store config in the environment
 Docker is setup in a way that currently the app needs no configuration.
